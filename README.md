@@ -1,3 +1,5 @@
+Fork of sxiv with custom options for jumping between image directories and other miscellaneous fixes that Jason Lai apparently could not live without
+
 ![sxiv](http://muennich.github.com/sxiv/img/logo.png "sxiv")
 
 **Simple X Image Viewer**
