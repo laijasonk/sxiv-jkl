@@ -157,7 +157,7 @@ static const keymap_t keys[] = {
 	{ 0,            XK_Down,          i_scroll,             DIR_DOWN },
 
 	{ 0,            XK_k,             i_scroll,             DIR_UP },
-	{ 0,            XK_e,             i_scroll,             DIR_UP },
+	{ 0,            XK_w,             i_scroll,             DIR_UP },
 	{ 0,            XK_Up,            i_scroll,             DIR_UP },
 
 	{ 0,            XK_l,             i_scroll,             DIR_RIGHT },
@@ -172,8 +172,8 @@ static const keymap_t keys[] = {
 	{ 0,            XK_equal,         i_set_zoom,           100 },
 	{ 0,            XK_w,             i_fit_to_win,         SCALE_DOWN },
 	{ 0,            XK_W,             i_fit_to_win,         SCALE_FIT },
-	{ 0,            XK_e,             i_fit_to_win,         SCALE_WIDTH },
-	{ 0,            XK_E,             i_fit_to_win,         SCALE_HEIGHT },
+	{ 0,            XK_c,             i_fit_to_win,         SCALE_WIDTH },
+	{ 0,            XK_z,             i_fit_to_win,         SCALE_HEIGHT },
 
 	{ 0,            XK_less,          i_rotate,             DEGREE_270 },
 	{ 0,            XK_greater,       i_rotate,             DEGREE_90 },
@@ -185,8 +185,13 @@ static const keymap_t keys[] = {
 	{ 0,            XK_a,             i_toggle_antialias,   None },
 	{ 0,            XK_A,             i_toggle_alpha,       None },
 	{ 0,            XK_s,             i_slideshow,          None },
+	
+	{ 0,            XK_Home,          i_scroll_to_edge,     DIR_UP },
+	{ 0,            XK_End,           i_scroll_to_edge,     DIR_DOWN },
+	{ 0,            XK_Prior,         g_scroll_screen,      DIR_UP },
+	{ 0,            XK_Next,          g_scroll_screen,      DIR_DOWN },
 
-	{ ControlMask,  XK_D,             g_shell_cmd,          (arg_t) "rm \"$SXIV_IMG\"" },
+	{ 0,						XK_x,             g_hello_world,        None },
 /* JASON EDITS 
 	{ false,  XK_o,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv o &" },
 	{ false,  XK_f,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv + \"$SXIV_IMG\" &" },
@@ -195,10 +200,6 @@ static const keymap_t keys[] = {
 	{ true,   XK_F,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv -2 \"$SXIV_IMG\" &" },
 	{ false,  XK_F12,           jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv r \"$SXIV_IMG\" &" },
 	{ false,  XK_F1,            jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv r \"$SXIV_IMG\" &" },
-	{ false,  XK_Home,          i_scroll_to_edge,     (arg_t) DIR_UP },
-	{ false,  XK_End,           i_scroll_to_edge,     (arg_t) DIR_DOWN },
-	{ false,  XK_Prior,         it_scroll_screen,     (arg_t) DIR_UP },
-	{ false,  XK_Next,          it_scroll_screen,     (arg_t) DIR_DOWN },
 	{ false,  XK_F6,            g_shell_cmd,         (arg_t) "mv \"$SXIV_IMG\" $(dirname $(dirname \"$SXIV_IMG\"))" },
 	{ false,  XK_A,             i_zoom,               (arg_t) -1 },
 	{ false,  XK_D,             i_zoom,               (arg_t) +1 }, */

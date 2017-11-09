@@ -114,15 +114,24 @@ bool cg_prefix_external(arg_t _)
 }
 
 // jklai
-bool cg_shell_cmd(arg_t a)
-{
-	const char *cmdline = (const char*) a;
-	if (cmdline == NULL || *cmdline == '\0')
-		return false;
-	setenv("SXIV_IMG", files[1].path, 1);
-	execl("/bin/sh", "/bin/sh", "-c", cmdline, NULL);
+//bool cg_shell_cmd(arg_t a)
+//{
+//	const char *cmdline = (const char*) a;
+//	if (cmdline == NULL || *cmdline == '\0')
+//		return false;
+//	setenv("SXIV_IMG", files[1].path, 1);
+//	execl("/bin/sh", "/bin/sh", "-c", cmdline, NULL);
+//
+//	return true;
+//}
 
-	return true;
+// jklai
+bool cg_hello_world(arg_t _)
+{
+	//const char *cmdline = (const char*) "echo \"hello world\" &";
+	//execl("/bin/sh", "/bin/sh", "-c", cmdline, NULL);
+	system( "echo 'hello world again' &" );
+    return true;
 }
 
 bool cg_reload_image(arg_t _)
