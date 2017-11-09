@@ -88,7 +88,6 @@ static const keymap_t keys[] = {
 
 	{ 0,            XK_r,             g_reload_image,       None },
 	{ 0,            XK_R,             t_reload_all,         None },
-	//{ false,  XK_D,             it_remove_image,      (arg_t) None }.
 
 	{ 0,            XK_n,             i_navigate,           +1 },
 	{ 0,            XK_n,             i_scroll_to_edge,     DIR_LEFT | DIR_UP },
@@ -187,6 +186,7 @@ static const keymap_t keys[] = {
 	{ 0,            XK_A,             i_toggle_alpha,       None },
 	{ 0,            XK_s,             i_slideshow,          None },
 
+	{ ControlMask,  XK_D,             g_shell_cmd,          (arg_t) "rm \"$SXIV_IMG\"" },
 /* JASON EDITS 
 	{ false,  XK_o,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv o &" },
 	{ false,  XK_f,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv + \"$SXIV_IMG\" &" },
@@ -199,8 +199,7 @@ static const keymap_t keys[] = {
 	{ false,  XK_End,           i_scroll_to_edge,     (arg_t) DIR_DOWN },
 	{ false,  XK_Prior,         it_scroll_screen,     (arg_t) DIR_UP },
 	{ false,  XK_Next,          it_scroll_screen,     (arg_t) DIR_DOWN },
-	{ true,   XK_D,             it_shell_cmd,         (arg_t) "rm \"$SXIV_IMG\"" },
-	{ false,  XK_F6,            it_shell_cmd,         (arg_t) "mv \"$SXIV_IMG\" $(dirname $(dirname \"$SXIV_IMG\"))" },
+	{ false,  XK_F6,            g_shell_cmd,         (arg_t) "mv \"$SXIV_IMG\" $(dirname $(dirname \"$SXIV_IMG\"))" },
 	{ false,  XK_A,             i_zoom,               (arg_t) -1 },
 	{ false,  XK_D,             i_zoom,               (arg_t) +1 }, */
 
