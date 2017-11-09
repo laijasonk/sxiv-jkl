@@ -1,8 +1,8 @@
-Fork of sxiv with custom options for jumping between image directories and other miscellaneous fixes that Jason Lai apparently could not live without
+**Simple X Image Viewer (jklai verison)**
 
-![sxiv](http://muennich.github.com/sxiv/img/logo.png "sxiv")
-
-**Simple X Image Viewer**
+Duplicate fork of sxiv with custom options for jumping between image
+directories, running shell commands without a key handler, and other
+miscellaneous changes that Jason Lai apparently could not live without
 
 The primary goal of sxiv is to create an image viewer, which only has the most
 basic features required for fast image viewing (the ones I want). It has vi key
@@ -21,18 +21,6 @@ Features
 * Basic support for multi-frame images
 * Load all frames from GIF files and play GIF animations
 * Display image information in status bar
-
-
-Screenshots
------------
-
-**Image mode:**
-
-![Image](http://muennich.github.com/sxiv/img/image.png "Image mode")
-
-**Thumbnail mode:**
-
-![Thumb](http://muennich.github.com/sxiv/img/thumb.png "Thumb mode")
 
 
 Installation
