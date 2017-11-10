@@ -126,7 +126,7 @@ bool cg_hello_world(arg_t _)
 bool cg_delete_file(arg_t _)
 {
   char cmdline[256];
-  sprintf(cmdline, "/hdd/jkl/bin/t440s/bin/rmxm %s &", files[0].path);
+  sprintf(cmdline, "/hdd/jkl/bin/t440s/rmxm %s &", files[0].path);
 	system(cmdline);
   return true;
 }
