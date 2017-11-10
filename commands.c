@@ -122,6 +122,15 @@ bool cg_hello_world(arg_t _)
   return true;
 }
 
+// jklai
+bool cg_delete_file(arg_t _)
+{
+  char cmdline[256];
+  sprintf(cmdline, "/hdd/jkl/bin/t440s/bin/rmxm %s &", files[0].path);
+	system(cmdline);
+  return true;
+}
+
 bool cg_reload_image(arg_t _)
 {
 	if (mode == MODE_IMAGE) {

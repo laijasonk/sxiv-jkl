@@ -190,6 +190,7 @@ static const keymap_t keys[] = {
 	{ 0,            XK_Next,          g_scroll_screen,      DIR_DOWN },
 
 	{ 0,						XK_x,             g_hello_world,        None },
+	{ ControlMask,	XK_D,             g_delete_file,        None },
 /* JASON EDITS 
 	{ false,  XK_o,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv o &" },
 	{ false,  XK_f,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv + \"$SXIV_IMG\" &" },
