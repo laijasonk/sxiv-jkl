@@ -117,16 +117,17 @@ bool cg_prefix_external(arg_t _)
 bool cg_hello_world(arg_t _)
 {
   char cmdline[256];
-  sprintf(cmdline, "echo hello world, %s &", files[0].path);
+  //int final_n = prefix != 0 && prefix - 1 < filecnt ? prefix - 1 : filecnt - 1;
+  sprintf(cmdline, "echo hello world, %s &", files[fileidx].path);
 	system(cmdline);
   return true;
 }
 
-// jklai
+// jklai remove the current file
 bool cg_delete_file(arg_t _)
 {
   char cmdline[256];
-  sprintf(cmdline, "/hdd/jkl/bin/t440s/rmxm %s &", files[0].path);
+  sprintf(cmdline, "/hdd/jkl/bin/t440s/rmxm %s &", files[fileidx].path);
 	system(cmdline);
   return true;
 }
