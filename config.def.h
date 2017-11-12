@@ -86,8 +86,13 @@ static const keymap_t keys[] = {
 
 	{ 0,            XK_n,             i_navigate,           +1 },
 	{ 0,            XK_n,             i_scroll_to_edge,     DIR_LEFT | DIR_UP },
+	{ 0,            XK_c,             i_navigate,           +1 },
+	{ 0,            XK_c,             i_scroll_to_edge,     DIR_LEFT | DIR_UP },
+
 	{ 0,            XK_b,             i_navigate,           -1 },
 	{ 0,            XK_b,             i_scroll_to_edge,     DIR_LEFT | DIR_UP },
+	{ 0,            XK_z,             i_navigate,           -1 },
+	{ 0,            XK_z,             i_scroll_to_edge,     DIR_LEFT | DIR_UP },
 
 
 	//{ 0,            XK_D,             g_remove_image,       None },
@@ -170,8 +175,8 @@ static const keymap_t keys[] = {
 	{ 0,            XK_equal,         i_set_zoom,           100 },
 	{ 0,            XK_w,             i_fit_to_win,         SCALE_DOWN },
 	{ 0,            XK_W,             i_fit_to_win,         SCALE_FIT },
-	{ 0,            XK_c,             i_fit_to_win,         SCALE_WIDTH },
-	{ 0,            XK_z,             i_fit_to_win,         SCALE_HEIGHT },
+	{ ControlMask,  XK_c,             i_fit_to_win,         SCALE_WIDTH },
+	{ ControlMask,  XK_z,             i_fit_to_win,         SCALE_HEIGHT },
 
 	{ 0,            XK_less,          i_rotate,             DEGREE_270 },
 	{ 0,            XK_greater,       i_rotate,             DEGREE_90 },
