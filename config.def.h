@@ -77,7 +77,7 @@ static const keymap_t keys[] = {
 	{ 0,            XK_e,             g_toggle_bar,         None },
 	{ 0,            XK_v,             g_toggle_bar,         None },
 
-	{ ControlMask,  XK_x,             g_prefix_external,    None },
+	//{ ControlMask,  XK_x,             g_prefix_external,    None },
 	{ 0,            XK_g,             g_first,              None },
 	{ 0,            XK_G,             g_n_or_last,          None },
 
@@ -116,8 +116,11 @@ static const keymap_t keys[] = {
 	{ 0,            XK_KP_Add,        g_zoom,               +1 },
 	{ 0,            XK_minus,         g_zoom,               -1 },
 	{ 0,            XK_KP_Subtract,   g_zoom,               -1 },
-	{ 0,            XK_A,             g_zoom,               -1 },
-	{ 0,            XK_D,             g_zoom,               +1 },
+
+	{ 0,            XK_Z,             g_zoom,               -1 },
+	{ 0,            XK_C,             g_zoom,               +1 },
+	{ ControlMask,  XK_z,             g_zoom,               -1 },
+	{ ControlMask,  XK_c,             g_zoom,               +1 },
 
 	{ 0,            XK_m,             g_toggle_image_mark,  None },
 	{ 0,            XK_M,             g_reverse_marks,      None },
@@ -173,10 +176,10 @@ static const keymap_t keys[] = {
 	{ 0,            XK_L,             i_scroll_to_edge,     DIR_RIGHT },
 
 	{ 0,            XK_equal,         i_set_zoom,           100 },
-	{ 0,            XK_w,             i_fit_to_win,         SCALE_DOWN },
-	{ 0,            XK_W,             i_fit_to_win,         SCALE_FIT },
-	{ ControlMask,  XK_c,             i_fit_to_win,         SCALE_WIDTH },
-	{ ControlMask,  XK_z,             i_fit_to_win,         SCALE_HEIGHT },
+	{ 0,            XK_x,             i_fit_to_win,         SCALE_HEIGHT },
+	{ 0,            XK_X,             i_fit_to_win,         SCALE_WIDTH },
+	{ ControlMask,  XK_x,             i_fit_to_win,         SCALE_FIT },
+	{ ControlMask,  XK_X,             i_fit_to_win,         SCALE_DOWN },
 
 	{ 0,            XK_less,          i_rotate,             DEGREE_270 },
 	{ 0,            XK_greater,       i_rotate,             DEGREE_90 },
@@ -185,7 +188,7 @@ static const keymap_t keys[] = {
 	{ 0,            XK_bar,           i_flip,               FLIP_HORIZONTAL },
 	{ 0,            XK_underscore,    i_flip,               FLIP_VERTICAL },
 
-	{ 0,            XK_a,             i_toggle_antialias,   None },
+	{ ControlMask,  XK_a,             i_toggle_antialias,   None },
 	{ 0,            XK_A,             i_toggle_alpha,       None },
 	{ 0,            XK_s,             i_slideshow,          None },
 	
@@ -196,11 +199,11 @@ static const keymap_t keys[] = {
 
 	{ ControlMask,	XK_D,             g_delete_file,        None },
 	{ 0,            XK_o,             g_file_dialog,        None },
-	{ 0,            XK_x,             g_hello_world,        None },
 	{ 0,            XK_f,             g_next_dir,           None },
 	{ 0,            XK_F,             g_prev_dir,           None },
 	{ 0,            XK_F12,           g_rand_dir,           None },
 	{ 0,            XK_F1,            g_rand_dir,           None },
+	//{ 0,            XK_x,             g_hello_world,        None },
 	//{ false,  XK_F6,            g_shell_cmd,         (arg_t) "mv \"$SXIV_IMG\" $(dirname $(dirname \"$SXIV_IMG\"))" },
 
 };
