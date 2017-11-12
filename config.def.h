@@ -189,18 +189,14 @@ static const keymap_t keys[] = {
 	{ 0,            XK_Prior,         g_scroll_screen,      DIR_UP },
 	{ 0,            XK_Next,          g_scroll_screen,      DIR_DOWN },
 
-	{ 0,            XK_x,             g_hello_world,        None },
 	{ ControlMask,	XK_D,             g_delete_file,        None },
-/* JASON EDITS 
-	{ false,  XK_o,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv o &" },
-	{ false,  XK_f,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv + \"$SXIV_IMG\" &" },
-	{ false,  XK_F,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv - \"$SXIV_IMG\" &" },
-	{ true,   XK_f,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv +2 \"$SXIV_IMG\" &" },
-	{ true,   XK_F,             jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv -2 \"$SXIV_IMG\" &" },
-	{ false,  XK_F12,           jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv r \"$SXIV_IMG\" &" },
-	{ false,  XK_F1,            jlsxiv,               (arg_t) "~/jkl/bin/t440s/jlsxiv r \"$SXIV_IMG\" &" },
-	{ false,  XK_F6,            g_shell_cmd,         (arg_t) "mv \"$SXIV_IMG\" $(dirname $(dirname \"$SXIV_IMG\"))" },
-*/
+	{ 0,            XK_o,             g_file_dialog,        None },
+	{ 0,            XK_x,             g_hello_world,        None },
+	{ 0,            XK_f,             g_next_dir,           None },
+	{ 0,            XK_F,             g_prev_dir,           None },
+	{ 0,            XK_F12,           g_rand_dir,           None },
+	{ 0,            XK_F1,            g_rand_dir,           None },
+	//{ false,  XK_F6,            g_shell_cmd,         (arg_t) "mv \"$SXIV_IMG\" $(dirname $(dirname \"$SXIV_IMG\"))" },
 
 };
 

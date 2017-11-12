@@ -118,8 +118,9 @@ bool cg_hello_world(arg_t _)
 {
   char cmdline[256];
   //int final_n = prefix != 0 && prefix - 1 < filecnt ? prefix - 1 : filecnt - 1;
-  sprintf(cmdline, "echo hello world, %s &", files[fileidx].path);
-	system(cmdline);
+  double curr_zoom = img.zoom * 100;
+  sprintf(cmdline, "echo hello world, fileidx=%d, path=%s, zoom=%d &", fileidx, files[fileidx].path, (int) curr_zoom);
+  system(cmdline);
   return true;
 }
 
@@ -128,8 +129,50 @@ bool cg_delete_file(arg_t _)
 {
   char cmdline[256];
   sprintf(cmdline, "/hdd/jkl/bin/t440s/rmxm %s &", files[fileidx].path);
-	system(cmdline);
+  system(cmdline);
   return true;
+}
+
+// jklai open file dialog
+bool cg_file_dialog(arg_t _)
+{
+  char cmdline[] = "/hdd/jkl/bin/t440s/jlsxiv o &";
+  system(cmdline);
+  exit(EXIT_SUCCESS);
+  return false;
+}
+
+// jklai previous image directory
+bool cg_prev_dir(arg_t _)
+{
+  char cmdline[256];
+  double curr_zoom = img.zoom * 100;
+  sprintf(cmdline, "/hdd/jkl/bin/t440s/jlsxiv - %s %d &", files[fileidx].path, (int) curr_zoom);
+  system(cmdline);
+  exit(EXIT_SUCCESS);
+  return false;
+}
+
+// jklai next image directory
+bool cg_next_dir(arg_t _)
+{
+  char cmdline[256];
+  double curr_zoom = img.zoom * 100;
+  sprintf(cmdline, "/hdd/jkl/bin/t440s/jlsxiv + %s %d &", files[fileidx].path, (int) curr_zoom);
+  system(cmdline);
+  exit(EXIT_SUCCESS);
+  return false;
+}
+
+// jklai random image directory
+bool cg_rand_dir(arg_t _)
+{
+  char cmdline[256];
+  double curr_zoom = img.zoom * 100;
+  sprintf(cmdline, "/hdd/jkl/bin/t440s/jlsxiv r %s %d &", files[fileidx].path, (int) curr_zoom);
+  system(cmdline);
+  exit(EXIT_SUCCESS);
+  return false;
 }
 
 bool cg_reload_image(arg_t _)
