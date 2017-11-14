@@ -94,23 +94,22 @@ static const keymap_t keys[] = {
 	{ 0,            XK_z,             i_navigate,           -1 },
 	{ 0,            XK_z,             i_scroll_to_edge,     DIR_LEFT | DIR_UP },
 
-
 	//{ 0,            XK_D,             g_remove_image,       None },
-	{ ControlMask,  XK_h,             g_scroll_screen,      DIR_LEFT },
-	{ ControlMask,  XK_a,             g_scroll_screen,      DIR_LEFT },
-	{ ControlMask,  XK_Left,          g_scroll_screen,      DIR_LEFT },
+	//{ ControlMask,  XK_h,             g_scroll_screen,      DIR_LEFT },
+	//{ ControlMask,  XK_a,             g_scroll_screen,      DIR_LEFT },
+	//{ ControlMask,  XK_Left,          g_scroll_screen,      DIR_LEFT },
 
-	{ ControlMask,  XK_j,             g_scroll_screen,      DIR_DOWN },
-	{ ControlMask,  XK_s,             g_scroll_screen,      DIR_DOWN },
-	{ ControlMask,  XK_Down,          g_scroll_screen,      DIR_DOWN },
+	//{ ControlMask,  XK_j,             g_scroll_screen,      DIR_DOWN },
+	//{ ControlMask,  XK_s,             g_scroll_screen,      DIR_DOWN },
+	//{ ControlMask,  XK_Down,          g_scroll_screen,      DIR_DOWN },
 
-	{ ControlMask,  XK_k,             g_scroll_screen,      DIR_UP },
-	{ ControlMask,  XK_w,             g_scroll_screen,      DIR_UP },
-	{ ControlMask,  XK_Up,            g_scroll_screen,      DIR_UP },
+	//{ ControlMask,  XK_k,             g_scroll_screen,      DIR_UP },
+	//{ ControlMask,  XK_w,             g_scroll_screen,      DIR_UP },
+	//{ ControlMask,  XK_Up,            g_scroll_screen,      DIR_UP },
 
-	{ ControlMask,  XK_l,             g_scroll_screen,      DIR_RIGHT },
-	{ ControlMask,  XK_d,             g_scroll_screen,      DIR_RIGHT },
-	{ ControlMask,  XK_Right,         g_scroll_screen,      DIR_RIGHT },
+	//{ ControlMask,  XK_l,             g_scroll_screen,      DIR_RIGHT },
+	//{ ControlMask,  XK_d,             g_scroll_screen,      DIR_RIGHT },
+	//{ ControlMask,  XK_Right,         g_scroll_screen,      DIR_RIGHT },
 
 	{ 0,            XK_plus,          g_zoom,               +1 },
 	{ 0,            XK_KP_Add,        g_zoom,               +1 },
@@ -190,7 +189,7 @@ static const keymap_t keys[] = {
 
 	{ ControlMask,  XK_a,             i_toggle_antialias,   None },
 	{ 0,            XK_A,             i_toggle_alpha,       None },
-	{ 0,            XK_s,             i_slideshow,          None },
+	//{ 0,            XK_s,             i_slideshow,          None },
 	
 	{ 0,            XK_Home,          i_scroll_to_edge,     DIR_UP },
 	{ 0,            XK_End,           i_scroll_to_edge,     DIR_DOWN },
