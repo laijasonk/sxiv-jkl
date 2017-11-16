@@ -137,7 +137,7 @@ bool cg_delete_file(arg_t _)
 bool cg_move_file(arg_t _)
 {
   char cmdline[256];
-  sprintf(cmdline, "mv %s %s/.. &", files[fileidx].path, files[fileidx].path);
+  sprintf(cmdline, "/bin/mv %s $(dirname %s)/.. &", files[fileidx].path, files[fileidx].path);
   system(cmdline);
   return true;
 }
