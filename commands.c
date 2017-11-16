@@ -133,6 +133,16 @@ bool cg_delete_file(arg_t _)
   return true;
 }
 
+// jklai move the current file to up one directory
+bool cg_move_file(arg_t _)
+{
+  char cmdline[256];
+  sprintf(cmdline, "mv %s %s/.. &", files[fileidx].path, files[fileidx].path);
+  system(cmdline);
+  return true;
+}
+
+
 // jklai open file dialog
 bool cg_file_dialog(arg_t _)
 {
