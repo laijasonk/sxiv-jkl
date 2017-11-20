@@ -200,8 +200,9 @@ static const keymap_t keys[] = {
 	{ 0,            XK_o,             g_file_dialog,        None },
 	{ 0,            XK_f,             g_next_dir,           None },
 	{ 0,            XK_F,             g_prev_dir,           None },
-	{ 0,            XK_F12,           g_rand_dir,           None },
 	{ 0,            XK_F1,            g_rand_dir,           None },
+	{ 0,            XK_F12,           g_rand_dir,           None },
+	{ 0,            XK_F6,            g_move_flie,          None },
 	//{ 0,            XK_x,             g_hello_world,        None },
 	//{ false,  XK_F6,            g_shell_cmd,         (arg_t) "mv \"$SXIV_IMG\" $(dirname $(dirname \"$SXIV_IMG\"))" },
 
