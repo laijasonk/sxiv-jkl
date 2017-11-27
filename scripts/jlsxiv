@@ -1,83 +1,105 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3.4
 
-import os,sys,random
-from tkinter import Tk,filedialog
+"""Wrapper for sxiv-jkl."""
+
+import argparse, os, sys, random, tkinter
+
+__author__ = 'Jason K Lai'
+__contact__ = 'http://www.jasonlai.com/'
+
+class jlsxiv( object ):
+
+    def __init__( self, args=None ):
+        pass
 
 def main():
-    if os.path.isfile('/tmp/jlsxiv'):
-        folder=os.path.dirname(open('/tmp/jlsxiv','r').read().rstrip())
-        if folder=='':
-            folder='/home/jason/'
+    if os.path.isfile( '/tmp/jlsxiv' ):
+        folder = os.path.dirname( open( '/tmp/jlsxiv', 'r' ).read().rstrip() )
+        if folder == '':
+            folder = '/home/jason/'
     else:
-        folder='/home/jason/'
-        open('/tmp/jlsxiv','w').write(folder)
+        folder = '/home/jason/'
+        open( '/tmp/jlsxiv', 'w' ).write( folder )
 
     # SPECIAL CASE TO JUMP FORWARD/BACKWARD IN DIRECTORY
-    origFolder=folder
-    if len(sys.argv)==3 or len(sys.argv)==4:
-        direction=str(sys.argv[1])
-        folder=os.path.dirname(str(sys.argv[2]))
-        if len(sys.argv)==4:
-            zoom=str(sys.argv[3])
+    origFolder = folder
+    if len( sys.argv ) == 3 or len( sys.argv ) == 4:
+        direction = str( sys.argv[ 1 ] )
+        folder = os.path.dirname( str( sys.argv[ 2 ] ) )
+        if len( sys.argv ) == 4:
+            zoom = str( sys.argv[ 3 ] )
         else:
-            zoom=150
-        origFolder=folder
-        jumpFolder=folder
+            zoom = 150
+        origFolder = folder
+        jumpFolder = folder
         
-        dirList=sorted(os.listdir(os.path.dirname(folder)))
-        for i in range(len(dirList)):
-            if str(dirList[i])==str(os.path.basename(folder)):
+        dirList = sorted( os.listdir( os.path.dirname( folder ) ) )
+        for i in range( len( dirList ) ):
+            if str( dirList[ i ] ) == str( os.path.basename( folder ) ):
                 break
         
-        if direction=='+' and i<len(dirList)-1:
-            jumpFolder=os.path.dirname(folder)+'/'+dirList[i+1]+'/'
-        elif direction=='+2' and i<len(dirList)-1:
-            jumpFolder=os.path.dirname(folder)+'/'+dirList[i+2]+'/'
-        elif direction=='-' and i<len(dirList)-1:
-            jumpFolder=os.path.dirname(folder)+'/'+dirList[i-1]+'/'
-        elif direction=='-2' and i<len(dirList)-1:
-            jumpFolder=os.path.dirname(folder)+'/'+dirList[i-2]+'/'
-        elif direction=='r':
-            jumpFolder=os.path.dirname(folder)+'/'+random.choice(dirList)+'/'
+        if direction == '+' and i < len( dirList ) - 1:
+            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i + 1 ] + '/'
+        elif direction == '+2' and i < len( dirList ) - 1:
+            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i + 2 ] + '/'
+        elif direction == '-' and i < len( dirList ) - 1:
+            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i - 1 ] + '/'
+        elif direction == '-2' and i < len( dirList ) - 1:
+            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i - 2 ] + '/'
+        elif direction == 'r':
+            jumpFolder = os.path.dirname( folder ) + '/' + random.choice( dirList ) + '/'
         else:
-            jumpFolder=os.path.dirname(folder)+'/'+dirList[i]+'/'
+            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i ] + '/'
 
-        if not os.path.isdir(jumpFolder):
-            jumpFolder=folder+'/'
+        if not os.path.isdir( jumpFolder ):
+            jumpFolder = folder + '/'
         
-        validFolder=0
-        for folderFile in os.listdir(jumpFolder):
-            if folderFile.lower().endswith(('.jpg','.JPG','.jpeg','.JPEG','.png','.PNG','.gif','.GIF','.tif','.TIF','.tiff','.TIFF','.bmp','.BMP')):
-                validFolder=1
+        validFolder = 0
+        for folderFile in os.listdir( jumpFolder ):
+            if folderFile.lower().endswith(
+                    ( '.jpg', '.JPG', '.jpeg', '.JPEG',
+                      '.png', '.PNG', '.gif', '.GIF',
+                      '.tif', '.TIF', '.tiff', '.TIFF',
+                      '.bmp', '.BMP' ) ):
+                validFolder = 1
                 break
         if not validFolder:
-            folder=jumpFolder
+            folder = jumpFolder
         else:
-            dirList=sorted(os.listdir(jumpFolder))
-            open('/tmp/jlsxiv','w').write(jumpFolder)
-            #os.system('/usr/local/bin/sxiv -b -n 1 -z 150 "'+jumpFolder+'"*')
-            os.system('/usr/bin/find "'+jumpFolder+'"* -type f -exec /usr/local/bin/sxiv -b -z '+zoom+' {} +')
+            dirList = sorted( os.listdir( jumpFolder ) )
+            open( '/tmp/jlsxiv', 'w' ).write( jumpFolder )
+            #os.system( '/usr/local/bin/sxiv -b -n 1 -z 150 "' + jumpFolder + '"*' )
+            os.system( '/usr/bin/find "' + jumpFolder + '"* -type f -exec /usr/local/bin/sxiv -b -z ' + zoom + ' {} +' )
             sys.exit()
-        print(jumpFolder)
+        print( jumpFolder )
 
     # NORMAL CASE
-    root=Tk()
+    root = tkinter.Tk()
     root.withdraw()
-    fileTypes=[('Image Files',('*.jpg','*.JPG','*.jpeg','*.JPEG','*.png','*.PNG','*.gif','*.GIF','*.tif','*.TIF','*.tiff','*.TIFF','*.bmp','*.BMP')),('All Files','*.*'),('JPG','*.jpg'),('PNG','*.png'),('TIFF','*.tif'),('BMP','*.bmp'),('GIF','*.gif')]
-    fileName=filedialog.askopenfilename(defaultextension='Image Files',filetypes=fileTypes,initialdir=folder,initialfile=folder)
+    fileTypes = [ ( 'Image Files',
+        ( '*.jpg', '*.JPG', '*.jpeg', '*.JPEG',
+          '*.png', '*.PNG', '*.gif', '*.GIF',
+          '*.tif', '*.TIF', '*.tiff', '*.TIFF',
+          '*.bmp', '*.BMP' ) ),
+        ( 'All Files', '*.*' ), ( 'JPG', '*.jpg' ), ( 'PNG', '*.png' ), ( 'TIFF', '*.tif' ), ( 'BMP', '*.bmp' ), ( 'GIF', '*.gif' ) ]
+    fileName = tkinter.filedialog.askopenfilename( defaultextension='Image Files', filetypes=fileTypes, initialdir=folder, initialfile=folder )
 
-    if len(fileName)>1:
-        folder=os.path.dirname(fileName)+'/'
-        dirList=sorted([s for s in os.listdir(folder) if s.rpartition('.')[2] in ('jpg','JPG','jpeg','JPEG','png','PNG','gif','GIF','tif','TIF','tiff','TIFF','bmp','BMP')])
-        fileNumber=dirList.index(os.path.basename(fileName))+1
-        print(fileNumber)
-        open('/tmp/jlsxiv','w').write(folder)
-        #os.system('/usr/local/bin/sxiv -b -n '+str(fileNumber)+' -z 150 "'+folder+'"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP}')
-        os.system('/usr/bin/find "'+folder+'/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -n '+str(fileNumber)+' -z 150 {} +')
-    elif folder and len(sys.argv)>=2:
-        open('/tmp/jlsxiv','w').write(origFolder+'/')
-        #os.system('/usr/local/bin/sxiv -b -z 150 "'+origFolder+'/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP}')
-        os.system('/usr/bin/find "'+origFolder+'/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -z 150 {} +')
+    if len( fileName ) > 1:
+        folder = os.path.dirname( fileName ) + '/'
+        dirList = sorted( [ s for s in os.listdir( folder ) if s.rpartition( '.' )[ 2 ] in 
+            ( 'jpg', 'JPG', 'jpeg', 'JPEG',
+              'png', 'PNG', 'gif', 'GIF',
+              'tif', 'TIF', 'tiff', 'TIFF',
+              'bmp', 'BMP' ) ] )
+        fileNumber = dirList.index( os.path.basename( fileName ) ) + 1
+        print( fileNumber )
+        open( '/tmp/jlsxiv', 'w' ).write( folder )
+        #os.system( '/usr/local/bin/sxiv -b -n ' + str( fileNumber ) + ' -z 150 "' + folder + '"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP}' )
+        os.system( '/usr/bin/find "' + folder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -n ' + str(fileNumber) + ' -z 150 {} +' )
+    elif folder and len( sys.argv ) >= 2:
+        open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
+        #os.system( '/usr/local/bin/sxiv -b -z 150 "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP}' )
+        os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -z 150 {} +' )
 
     sys.exit()
 
