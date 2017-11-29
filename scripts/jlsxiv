@@ -10,98 +10,119 @@ __contact__ = 'http://www.jasonlai.com/'
 class jlsxiv( object ):
 
     def __init__( self, args=None ):
-        pass
 
-def main():
-    if os.path.isfile( '/tmp/jlsxiv' ):
-        folder = os.path.dirname( open( '/tmp/jlsxiv', 'r' ).read().rstrip() )
-        if folder == '':
+        """The class constructor."""
+
+        self.path = args.path if args is not None else None
+        self.forward = args.forward if args is not None else None
+        self.backward = args.backward if args is not None else None
+        self.random = args.backward if args is not None else None
+        self.zoom = args.zoom if args is not None else None
+        return
+
+    def run( self ):
+
+        """The main function."""
+
+        if self.path is None: self.path = False
+        if self.forward and self.backward:
+            raise ValueError( 'Cannot move both forward and backwards.' )
+        if (self.random and self.forward) or (self.random and self.backward):
+            raise ValueError( 'Cannot move in a single direction and randomly.' )
+        if self.zoom is None: self.zoom = 150
+
+        # check if historic folder already defined
+        if os.path.isfile( '/tmp/jlsxiv' ):
+            folder = os.path.dirname( open( '/tmp/jlsxiv', 'r' ).read().rstrip() )
+            if folder == '':
+                folder = '/home/jason/'
+        else:
             folder = '/home/jason/'
-    else:
-        folder = '/home/jason/'
-        open( '/tmp/jlsxiv', 'w' ).write( folder )
+            open( '/tmp/jlsxiv', 'w' ).write( folder )
 
-    # SPECIAL CASE TO JUMP FORWARD/BACKWARD IN DIRECTORY
-    origFolder = folder
-    if len( sys.argv ) == 3 or len( sys.argv ) == 4:
-        direction = str( sys.argv[ 1 ] )
-        folder = os.path.dirname( str( sys.argv[ 2 ] ) )
-        if len( sys.argv ) == 4:
-            zoom = str( sys.argv[ 3 ] )
-        else:
-            zoom = 150
+        # SPECIAL CASE TO JUMP FORWARD/BACKWARD IN DIRECTORY
         origFolder = folder
-        jumpFolder = folder
-        
-        dirList = sorted( os.listdir( os.path.dirname( folder ) ) )
-        for i in range( len( dirList ) ):
-            if str( dirList[ i ] ) == str( os.path.basename( folder ) ):
-                break
-        
-        if direction == '+' and i < len( dirList ) - 1:
-            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i + 1 ] + '/'
-        elif direction == '+2' and i < len( dirList ) - 1:
-            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i + 2 ] + '/'
-        elif direction == '-' and i < len( dirList ) - 1:
-            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i - 1 ] + '/'
-        elif direction == '-2' and i < len( dirList ) - 1:
-            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i - 2 ] + '/'
-        elif direction == 'r':
-            jumpFolder = os.path.dirname( folder ) + '/' + random.choice( dirList ) + '/'
-        else:
-            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i ] + '/'
+        if self.forward or self.backward or self.random:
+            folder = os.path.dirname( self.path )
+            origFolder = folder
+            jumpFolder = folder
+            
+            dirList = sorted( os.listdir( os.path.dirname( folder ) ) )
+            for i in range( len( dirList ) ):
+                if str( dirList[ i ] ) == str( os.path.basename( folder ) ):
+                    break
+            
+            if self.forward and i < len( dirList ) - 1:
+                jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i + 1 ] + '/'
+            elif self.backward and i < len( dirList ) - 1:
+                jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i - 1 ] + '/'
+            elif self.random:
+                jumpFolder = os.path.dirname( folder ) + '/' + random.choice( dirList ) + '/'
+            else:
+                jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i ] + '/'
 
-        if not os.path.isdir( jumpFolder ):
-            jumpFolder = folder + '/'
-        
-        validFolder = 0
-        for folderFile in os.listdir( jumpFolder ):
-            if folderFile.lower().endswith(
-                    ( '.jpg', '.JPG', '.jpeg', '.JPEG',
-                      '.png', '.PNG', '.gif', '.GIF',
-                      '.tif', '.TIF', '.tiff', '.TIFF',
-                      '.bmp', '.BMP' ) ):
-                validFolder = 1
-                break
-        if not validFolder:
-            folder = jumpFolder
-        else:
-            dirList = sorted( os.listdir( jumpFolder ) )
-            open( '/tmp/jlsxiv', 'w' ).write( jumpFolder )
-            #os.system( '/usr/local/bin/sxiv -b -n 1 -z 150 "' + jumpFolder + '"*' )
-            os.system( '/usr/bin/find "' + jumpFolder + '"* -type f -exec /usr/local/bin/sxiv -b -z ' + zoom + ' {} +' )
-            sys.exit()
-        print( jumpFolder )
+            if not os.path.isdir( jumpFolder ):
+                jumpFolder = folder + '/'
+            
+            validFolder = 0
+            for folderFile in os.listdir( jumpFolder ):
+                if folderFile.lower().endswith(
+                        ( '.jpg', '.JPG', '.jpeg', '.JPEG',
+                          '.png', '.PNG', '.gif', '.GIF',
+                          '.tif', '.TIF', '.tiff', '.TIFF',
+                          '.bmp', '.BMP' ) ):
+                    validFolder = 1
+                    break
 
-    # NORMAL CASE
-    root = tkinter.Tk()
-    root.withdraw()
-    fileTypes = [ ( 'Image Files',
-        ( '*.jpg', '*.JPG', '*.jpeg', '*.JPEG',
-          '*.png', '*.PNG', '*.gif', '*.GIF',
-          '*.tif', '*.TIF', '*.tiff', '*.TIFF',
-          '*.bmp', '*.BMP' ) ),
-        ( 'All Files', '*.*' ), ( 'JPG', '*.jpg' ), ( 'PNG', '*.png' ), ( 'TIFF', '*.tif' ), ( 'BMP', '*.bmp' ), ( 'GIF', '*.gif' ) ]
-    fileName = tkinter.filedialog.askopenfilename( defaultextension='Image Files', filetypes=fileTypes, initialdir=folder, initialfile=folder )
+            if not validFolder:
+                folder = jumpFolder
+            else:
+                dirList = sorted( os.listdir( jumpFolder ) )
+                open( '/tmp/jlsxiv', 'w' ).write( jumpFolder )
+                os.system( '/usr/bin/find "' + jumpFolder + '"* -type f -exec /usr/local/bin/sxiv -b -z ' + zoom + ' {} +' )
+                sys.exit()
+            print( jumpFolder )
 
-    if len( fileName ) > 1:
-        folder = os.path.dirname( fileName ) + '/'
-        dirList = sorted( [ s for s in os.listdir( folder ) if s.rpartition( '.' )[ 2 ] in 
-            ( 'jpg', 'JPG', 'jpeg', 'JPEG',
-              'png', 'PNG', 'gif', 'GIF',
-              'tif', 'TIF', 'tiff', 'TIFF',
-              'bmp', 'BMP' ) ] )
-        fileNumber = dirList.index( os.path.basename( fileName ) ) + 1
-        print( fileNumber )
-        open( '/tmp/jlsxiv', 'w' ).write( folder )
-        #os.system( '/usr/local/bin/sxiv -b -n ' + str( fileNumber ) + ' -z 150 "' + folder + '"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP}' )
-        os.system( '/usr/bin/find "' + folder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -n ' + str(fileNumber) + ' -z 150 {} +' )
-    elif folder and len( sys.argv ) >= 2:
-        open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
-        #os.system( '/usr/local/bin/sxiv -b -z 150 "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP}' )
-        os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -z 150 {} +' )
+        # NORMAL CASE
+        root = tkinter.Tk()
+        root.withdraw()
+        fileTypes = [ ( 'Image Files',
+            ( '*.jpg', '*.JPG', '*.jpeg', '*.JPEG',
+              '*.png', '*.PNG', '*.gif', '*.GIF',
+              '*.tif', '*.TIF', '*.tiff', '*.TIFF',
+              '*.bmp', '*.BMP' ) ),
+            ( 'All Files', '*.*' ), ( 'JPG', '*.jpg' ), ( 'PNG', '*.png' ), ( 'TIFF', '*.tif' ), ( 'BMP', '*.bmp' ), ( 'GIF', '*.gif' ) ]
+        fileName = tkinter.filedialog.askopenfilename( defaultextension='Image Files', filetypes=fileTypes, initialdir=folder, initialfile=folder )
+
+        if len( fileName ) > 1:
+            folder = os.path.dirname( fileName ) + '/'
+            dirList = sorted( [ s for s in os.listdir( folder ) if s.rpartition( '.' )[ 2 ] in 
+                ( 'jpg', 'JPG', 'jpeg', 'JPEG',
+                  'png', 'PNG', 'gif', 'GIF',
+                  'tif', 'TIF', 'tiff', 'TIFF',
+                  'bmp', 'BMP' ) ] )
+            fileNumber = dirList.index( os.path.basename( fileName ) ) + 1
+            print( fileNumber )
+            open( '/tmp/jlsxiv', 'w' ).write( folder )
+            os.system( '/usr/bin/find "' + folder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -n ' + str(fileNumber) + ' -z 150 {} +' )
+
+        elif folder and (self.forward or self.backward or self.random):
+            open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
+            os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -z 150 {} +' )
 
     sys.exit()
 
 if __name__ == '__main__':
-    main()
+
+    parser = argparse.ArgumentParser( description=__doc__ )
+
+    # command line option flags
+    parser.add_argument( '-p', '--path', dest='path', required=False, help='specify the current path (may include the filename)', type=str )
+    parser.add_argument( '-f', '--forward', dest='forward', required=False, help='jump forward a directory', action='store_true' )
+    parser.add_argument( '-b', '--backward', dest='backward', required=False, help='jump backward a directory', action='store_true' )
+    parser.add_argument( '-r', '--random', dest='random', required=False, help='jump to a random directory', action='store_true' )
+    parser.add_argument( '-z', '--zoom', dest='zoom', required=False, help='define the zoom of sxiv', default=150, type=int )
+
+    # command line execution
+    main = jlsxiv( args=parser.parse_args() )
+    main.run()
