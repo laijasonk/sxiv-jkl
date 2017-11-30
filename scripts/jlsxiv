@@ -40,67 +40,25 @@ class jlsxiv( object ):
             folder = '/home/jason/'
             open( '/tmp/jlsxiv', 'w' ).write( folder )
 
-        # SPECIAL CASE TO JUMP FORWARD/BACKWARD IN DIRECTORY
+        # case where the user wants to jump directories
         origFolder = folder
         if self.forward or self.backward or self.random:
             folder = os.path.dirname( self.path )
-            origFolder = folder
-            jumpFolder = folder
-            
-            dirList = sorted( os.listdir( os.path.dirname( folder ) ) )
-            for i in range( len( dirList ) ):
-                if str( dirList[ i ] ) == str( os.path.basename( folder ) ):
-                    break
-            
-            if self.forward and i < len( dirList ) - 1:
-                jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i + 1 ] + '/'
-            elif self.backward and i < len( dirList ) - 1:
-                jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i - 1 ] + '/'
-            elif self.random:
-                jumpFolder = os.path.dirname( folder ) + '/' + random.choice( dirList ) + '/'
-            else:
-                jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i ] + '/'
+            self.jump_directory( folder ) 
 
-            if not os.path.isdir( jumpFolder ):
-                jumpFolder = folder + '/'
-            
-            validFolder = 0
-            for folderFile in os.listdir( jumpFolder ):
-                if folderFile.lower().endswith(
-                        ( '.jpg', '.JPG', '.jpeg', '.JPEG',
-                          '.png', '.PNG', '.gif', '.GIF',
-                          '.tif', '.TIF', '.tiff', '.TIFF',
-                          '.bmp', '.BMP' ) ):
-                    validFolder = 1
-                    break
-
-            if not validFolder:
-                folder = jumpFolder
-            else:
-                dirList = sorted( os.listdir( jumpFolder ) )
-                open( '/tmp/jlsxiv', 'w' ).write( jumpFolder )
-                os.system( '/usr/bin/find "' + jumpFolder + '"* -type f -exec /usr/local/bin/sxiv -b -z ' + zoom + ' {} +' )
-                sys.exit()
-            print( jumpFolder )
-
-        # NORMAL CASE
+        # case where script ran without options
         root = tkinter.Tk()
         root.withdraw()
-        fileTypes = [ ( 'Image Files',
-            ( '*.jpg', '*.JPG', '*.jpeg', '*.JPEG',
-              '*.png', '*.PNG', '*.gif', '*.GIF',
-              '*.tif', '*.TIF', '*.tiff', '*.TIFF',
-              '*.bmp', '*.BMP' ) ),
+        fileTypes = [ 
+            ( 'Image Files', ( '*.jpg', '*.JPG', '*.jpeg', '*.JPEG', '*.png', '*.PNG', '*.gif', '*.GIF', '*.tif', '*.TIF', '*.tiff', '*.TIFF', '*.bmp', '*.BMP' ) ),
             ( 'All Files', '*.*' ), ( 'JPG', '*.jpg' ), ( 'PNG', '*.png' ), ( 'TIFF', '*.tif' ), ( 'BMP', '*.bmp' ), ( 'GIF', '*.gif' ) ]
         fileName = tkinter.filedialog.askopenfilename( defaultextension='Image Files', filetypes=fileTypes, initialdir=folder, initialfile=folder )
 
         if len( fileName ) > 1:
             folder = os.path.dirname( fileName ) + '/'
             dirList = sorted( [ s for s in os.listdir( folder ) if s.rpartition( '.' )[ 2 ] in 
-                ( 'jpg', 'JPG', 'jpeg', 'JPEG',
-                  'png', 'PNG', 'gif', 'GIF',
-                  'tif', 'TIF', 'tiff', 'TIFF',
-                  'bmp', 'BMP' ) ] )
+                ( 'jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF',
+                  'tif', 'TIF', 'tiff', 'TIFF', 'bmp', 'BMP' ) ] )
             fileNumber = dirList.index( os.path.basename( fileName ) ) + 1
             print( fileNumber )
             open( '/tmp/jlsxiv', 'w' ).write( folder )
@@ -110,7 +68,48 @@ class jlsxiv( object ):
             open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
             os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -z 150 {} +' )
 
-    sys.exit()
+        return
+
+    def jump_directory( self, folder ):
+        origFolder = folder
+        jumpFolder = folder
+        
+        dirList = sorted( os.listdir( os.path.dirname( folder ) ) )
+        for i in range( len( dirList ) ):
+            if str( dirList[ i ] ) == str( os.path.basename( folder ) ):
+                break
+        
+        if self.forward and i < len( dirList ) - 1:
+            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i + 1 ] + '/'
+        elif self.backward and i < len( dirList ) - 1:
+            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i - 1 ] + '/'
+        elif self.random:
+            jumpFolder = os.path.dirname( folder ) + '/' + random.choice( dirList ) + '/'
+        else:
+            jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i ] + '/'
+
+        if not os.path.isdir( jumpFolder ):
+            jumpFolder = folder + '/'
+        
+        validFolder = 0
+        for folderFile in os.listdir( jumpFolder ):
+            if folderFile.lower().endswith(
+                    ( '.jpg', '.JPG', '.jpeg', '.JPEG',
+                      '.png', '.PNG', '.gif', '.GIF',
+                      '.tif', '.TIF', '.tiff', '.TIFF',
+                      '.bmp', '.BMP' ) ):
+                validFolder = 1
+                break
+
+        if not validFolder:
+            folder = jumpFolder
+        else:
+            dirList = sorted( os.listdir( jumpFolder ) )
+            open( '/tmp/jlsxiv', 'w' ).write( jumpFolder )
+            os.system( '/usr/bin/find "' + jumpFolder + '"* -type f -exec /usr/local/bin/sxiv -b -z ' + zoom + ' {} +' )
+            sys.exit()
+
+        return
 
 if __name__ == '__main__':
 
@@ -126,3 +125,4 @@ if __name__ == '__main__':
     # command line execution
     main = jlsxiv( args=parser.parse_args() )
     main.run()
+    sys.exit() # needed since calling external program
