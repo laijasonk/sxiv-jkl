@@ -17,7 +17,7 @@ class jlsxiv( object ):
         self.path = args.path if args is not None else None
         self.forward = args.forward if args is not None else None
         self.backward = args.backward if args is not None else None
-        self.random = args.backward if args is not None else None
+        self.random = args.random if args is not None else None
         self.zoom = args.zoom if args is not None else None
         return
 
@@ -115,7 +115,7 @@ class jlsxiv( object ):
         else:
             dirList = sorted( os.listdir( jumpFolder ) )
             open( '/tmp/jlsxiv', 'w' ).write( jumpFolder )
-            os.system( '/usr/bin/find "' + jumpFolder + '"* -type f -exec /usr/local/bin/sxiv -b -z ' + zoom + ' {} +' )
+            os.system( '/usr/bin/find "' + jumpFolder + '"* -type f -exec /usr/local/bin/sxiv -b -z ' + str(self.zoom) + ' {} +' )
             sys.exit()
 
         return

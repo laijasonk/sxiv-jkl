@@ -128,7 +128,7 @@ bool cg_hello_world(arg_t _)
 bool cg_delete_file(arg_t _)
 {
   char cmdline[256];
-  sprintf(cmdline, "/hdd/jkl/bin/t440s/rmxm %s &", files[fileidx].path);
+  sprintf(cmdline, "/hdd/jkl/bin/t440s/rmxm \"%s\" &", files[fileidx].path);
   system(cmdline);
   return true;
 }
@@ -137,7 +137,7 @@ bool cg_delete_file(arg_t _)
 bool cg_move_file(arg_t _)
 {
   char cmdline[256];
-  sprintf(cmdline, "/bin/mv %s $(dirname %s)/.. &", files[fileidx].path, files[fileidx].path);
+  sprintf(cmdline, "/bin/mv \"%s\" \"$(dirname %s)/..\" &", files[fileidx].path, files[fileidx].path);
   system(cmdline);
   return true;
 }
@@ -146,7 +146,7 @@ bool cg_move_file(arg_t _)
 // jklai open file dialog
 bool cg_file_dialog(arg_t _)
 {
-  char cmdline[] = "/hdd/jkl/bin/t440s/jlsxiv o &";
+  char cmdline[] = "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv o &";
   system(cmdline);
   exit(EXIT_SUCCESS);
   return false;
@@ -157,7 +157,8 @@ bool cg_prev_dir(arg_t _)
 {
   char cmdline[256];
   double curr_zoom = img.zoom * 100;
-  sprintf(cmdline, "/hdd/jkl/bin/t440s/jlsxiv - %s %d &", files[fileidx].path, (int) curr_zoom);
+  sprintf(cmdline, "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv -b -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
+  printf(cmdline);
   system(cmdline);
   exit(EXIT_SUCCESS);
   return false;
@@ -168,7 +169,8 @@ bool cg_next_dir(arg_t _)
 {
   char cmdline[256];
   double curr_zoom = img.zoom * 100;
-  sprintf(cmdline, "/hdd/jkl/bin/t440s/jlsxiv + %s %d &", files[fileidx].path, (int) curr_zoom);
+  sprintf(cmdline, "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv -f -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
+  printf(cmdline);
   system(cmdline);
   exit(EXIT_SUCCESS);
   return false;
@@ -179,7 +181,8 @@ bool cg_rand_dir(arg_t _)
 {
   char cmdline[256];
   double curr_zoom = img.zoom * 100;
-  sprintf(cmdline, "/hdd/jkl/bin/t440s/jlsxiv r %s %d &", files[fileidx].path, (int) curr_zoom);
+  sprintf(cmdline, "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv -r -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
+  printf(cmdline);
   system(cmdline);
   exit(EXIT_SUCCESS);
   return false;
