@@ -146,7 +146,7 @@ bool cg_move_file(arg_t _)
 // jklai open file dialog
 bool cg_file_dialog(arg_t _)
 {
-  char cmdline[] = "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv o &";
+  char cmdline[] = "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv &";
   system(cmdline);
   exit(EXIT_SUCCESS);
   return false;
