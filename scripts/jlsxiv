@@ -2,7 +2,8 @@
 
 """Wrapper for sxiv-jkl."""
 
-import argparse, os, sys, random, tkinter
+import argparse, os, sys, random
+from tkinter import Tk, filedialog
 
 __author__ = 'Jason K Lai'
 __contact__ = 'http://www.jasonlai.com/'
@@ -31,7 +32,7 @@ class jlsxiv( object ):
             raise ValueError( 'Cannot move in a single direction and randomly.' )
         if self.zoom is None: self.zoom = 150
 
-        # check if historic folder already defined
+        # check if folder already defined
         if os.path.isfile( '/tmp/jlsxiv' ):
             folder = os.path.dirname( open( '/tmp/jlsxiv', 'r' ).read().rstrip() )
             if folder == '':
@@ -47,30 +48,38 @@ class jlsxiv( object ):
             self.jump_directory( folder ) 
 
         # case where script ran without options
-        root = tkinter.Tk()
+        root = Tk()
         root.withdraw()
         fileTypes = [ 
             ( 'Image Files', ( '*.jpg', '*.JPG', '*.jpeg', '*.JPEG', '*.png', '*.PNG', '*.gif', '*.GIF', '*.tif', '*.TIF', '*.tiff', '*.TIFF', '*.bmp', '*.BMP' ) ),
             ( 'All Files', '*.*' ), ( 'JPG', '*.jpg' ), ( 'PNG', '*.png' ), ( 'TIFF', '*.tif' ), ( 'BMP', '*.bmp' ), ( 'GIF', '*.gif' ) ]
-        fileName = tkinter.filedialog.askopenfilename( defaultextension='Image Files', filetypes=fileTypes, initialdir=folder, initialfile=folder )
+        fileName = filedialog.askopenfilename( defaultextension='Image Files', filetypes=fileTypes, initialdir=folder, initialfile=folder )
 
+        # case where a legitimate file is selected
         if len( fileName ) > 1:
             folder = os.path.dirname( fileName ) + '/'
             dirList = sorted( [ s for s in os.listdir( folder ) if s.rpartition( '.' )[ 2 ] in 
                 ( 'jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF',
                   'tif', 'TIF', 'tiff', 'TIFF', 'bmp', 'BMP' ) ] )
             fileNumber = dirList.index( os.path.basename( fileName ) ) + 1
-            print( fileNumber )
             open( '/tmp/jlsxiv', 'w' ).write( folder )
             os.system( '/usr/bin/find "' + folder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -n ' + str(fileNumber) + ' -z 150 {} +' )
 
+        # case where a jump is expected
         elif folder and (self.forward or self.backward or self.random):
             open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
             os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -z 150 {} +' )
 
+        # what does this cover?
+        else:
+            pass
+
         return
 
     def jump_directory( self, folder ):
+
+        """ Function for changing directories in a given direction. """
+
         origFolder = folder
         jumpFolder = folder
         
@@ -91,14 +100,14 @@ class jlsxiv( object ):
         if not os.path.isdir( jumpFolder ):
             jumpFolder = folder + '/'
         
-        validFolder = 0
+        validFolder = False
         for folderFile in os.listdir( jumpFolder ):
             if folderFile.lower().endswith(
                     ( '.jpg', '.JPG', '.jpeg', '.JPEG',
                       '.png', '.PNG', '.gif', '.GIF',
                       '.tif', '.TIF', '.tiff', '.TIFF',
                       '.bmp', '.BMP' ) ):
-                validFolder = 1
+                validFolder = True
                 break
 
         if not validFolder:
