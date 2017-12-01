@@ -88,10 +88,6 @@ class jlsxiv( object ):
             if str( dirList[ i ] ) == str( os.path.basename( folder ) ):
                 break
         
-        print()
-        print( "i = " + str(i) )
-        print( "len(dirList)-1 = " + str( len(dirList)-1 ) )
-
         if self.forward and i < len( dirList ) - 1:
             jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i + 1 ] + '/'
         elif self.backward and i > 0:
