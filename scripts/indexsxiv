@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [[ -z $1 ]]
+then
+    echo "Usage: $0 image_file"
+    exit
+fi
+
+image_file=$1
+
+cd $(dirname $image_file)
+idx=$(ls ./*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} | sort | grep -n "$(basename $image_file)" | sed 's/:.*$//g')
+
+nohup /usr/bin/find ./*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f \
+    -exec /usr/local/bin/sxiv -b -n $idx -z 150 {} + > /dev/null 2>&1 &
+
