@@ -19,7 +19,8 @@ class jlsxiv( object ):
         self.backward = args.backward if args is not None else None
         self.random = args.random if args is not None else None
         self.zoom = args.zoom if args is not None else None
-        return
+        self.index = args.index if args is not None else None
+        return 1
 
     def run( self ):
 
@@ -63,18 +64,20 @@ class jlsxiv( object ):
                   'tif', 'TIF', 'tiff', 'TIFF', 'bmp', 'BMP' ) ] )
             fileNumber = dirList.index( os.path.basename( fileName ) ) + 1
             open( '/tmp/jlsxiv', 'w' ).write( folder )
-            os.system( '/usr/bin/find "' + folder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -n ' + str(fileNumber) + ' -z 150 {} +' )
+            os.system( '/usr/bin/find "' + folder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} ' +
+                '-type f -exec /usr/local/bin/sxiv -b -n ' + str(fileNumber) + ' -z 150 {} +' )
 
         # case where a jump is expected
         elif folder and (self.forward or self.backward or self.random):
             open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
-            os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} -type f -exec /usr/local/bin/sxiv -b -z 150 {} +' )
+            os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} ' +
+                '-type f -exec /usr/local/bin/sxiv -b -z 150 {} +' )
 
         # what does this cover?
         else:
             pass
 
-        return
+        return 1
 
     def jump_directory( self, folder ):
 
@@ -118,7 +121,7 @@ class jlsxiv( object ):
             os.system( '/usr/bin/find "' + jumpFolder + '"* -type f -exec /usr/local/bin/sxiv -b -z ' + str(self.zoom) + ' {} +' )
             sys.exit()
 
-        return
+        return folder
 
 if __name__ == '__main__':
 
@@ -129,7 +132,8 @@ if __name__ == '__main__':
     parser.add_argument( '-f', '--forward', dest='forward', required=False, help='jump forward a directory', action='store_true' )
     parser.add_argument( '-b', '--backward', dest='backward', required=False, help='jump backward a directory', action='store_true' )
     parser.add_argument( '-r', '--random', dest='random', required=False, help='jump to a random directory', action='store_true' )
-    parser.add_argument( '-z', '--zoom', dest='zoom', required=False, help='define the zoom of sxiv', default=150, type=int )
+    parser.add_argument( '-i', '--index', dest='index', required=False, help='define the starting index (optional)', type=int )
+    parser.add_argument( '-z', '--zoom', dest='zoom', required=False, help='define the zoom of sxiv (optional)', default=150, type=int )
 
     # command line execution
     main = jlsxiv( args=parser.parse_args() )
