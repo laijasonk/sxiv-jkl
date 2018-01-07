@@ -67,6 +67,11 @@ class jlsxiv( object ):
             os.system( '/usr/bin/find "' + folder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} ' +
                 '-type f -exec /usr/local/bin/sxiv -b -n ' + str(fileNumber) + ' -z 150 {} +' )
 
+        elif not self.index is None:
+            open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
+            os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} ' +
+                '-type f -exec /usr/local/bin/sxiv -b -n ' + str(self.index) + '-z 150 {} +' )
+
         # case where a jump is expected
         elif folder and (self.forward or self.backward or self.random):
             open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )

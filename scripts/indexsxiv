@@ -3,6 +3,7 @@
 if [[ -z $1 ]]
 then
     echo "Usage: $0 image_file"
+    echo "WARNING: deprecated script"
     exit
 fi
 
