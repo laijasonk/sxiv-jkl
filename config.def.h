@@ -73,6 +73,7 @@ static const int THUMB_SIZE = 1;
 static const keymap_t keys[] = {
 	/* modifiers    key               function              argument */
 	{ 0,            XK_q,             g_quit,               None },
+	{ 0,            XK_semicolon,     g_quit,               None },
 	{ 0,            XK_Return,        g_switch_mode,        None },
 
 	{ 0,            XK_e,             g_toggle_bar,         None },
