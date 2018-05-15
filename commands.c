@@ -127,10 +127,16 @@ bool cg_hello_world(arg_t _)
 // jklai remove the current file
 bool cg_delete_file(arg_t _)
 {
+  int n = prefix != 0 && prefix - 1 < filecnt ? prefix - 1 : filecnt - 1;
   char cmdline[256];
   sprintf(cmdline, "/hdd/jkl/bin/t440s/rmxm \"%s\" &", files[fileidx].path);
   system(cmdline);
-  load_image(fileidx);
+  if (fileidx != n) {
+    load_image(fileidx + 1);
+  }
+  else {
+    load_image(fileidx - 1);
+  }
   return true;
 }
 
