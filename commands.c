@@ -130,6 +130,7 @@ bool cg_delete_file(arg_t _)
   char cmdline[256];
   sprintf(cmdline, "/hdd/jkl/bin/t440s/rmxm \"%s\" &", files[fileidx].path);
   system(cmdline);
+  load_image(fileidx);
   return true;
 }
 
