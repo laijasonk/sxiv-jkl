@@ -137,7 +137,8 @@ bool cg_delete_file(arg_t _)
   else {
     load_image(fileidx - 1);
   }
-  return true;
+  return img_pan_edge(&img, DIR_UP);
+  //return true;
 }
 
 // jklai move the current file to up one directory
