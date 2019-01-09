@@ -17,7 +17,8 @@ class jlsxiv( object ):
         self.path = args.path if args is not None else None
         self.forward = args.forward if args is not None else None
         self.backward = args.backward if args is not None else None
-        self.random = args.random if args is not None else None
+        self.randomDir = args.randomDir if args is not None else None
+        self.randomImg = args.randomImg if args is not None else None
         self.zoom = args.zoom if args is not None else None
         self.index = args.index if args is not None else None
         return
@@ -29,7 +30,7 @@ class jlsxiv( object ):
         if self.path is None: self.path = False
         if self.forward and self.backward:
             raise ValueError( 'Cannot move both forward and backwards.' )
-        if (self.random and self.forward) or (self.random and self.backward):
+        if (self.randomDir and self.forward) or (self.randomDir and self.backward):
             raise ValueError( 'Cannot move in a single direction and randomly.' )
         if self.zoom is None: self.zoom = 150
 
@@ -44,17 +45,36 @@ class jlsxiv( object ):
 
         # case where the user wants to jump directories
         origFolder = folder
-        if self.forward or self.backward or self.random:
+        if self.forward or self.backward or self.randomDir:
             folder = os.path.dirname( self.path )
             self.jump_directory( folder ) 
 
+        # case where there's an index selected
+        if not self.index is None:
+            open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
+            os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} ' +
+                '-type f -exec /usr/local/bin/sxiv -b -n ' + str(self.index) + ' -z ' + str(self.zoom) + ' {} +' )
+            sys.exit()
+
+        # case where a random image is selected
+        elif self.randomImg:
+            open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
+            dirList = sorted( [ s for s in os.listdir( folder ) if s.rpartition( '.' )[ 2 ] in 
+                ( 'jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF',
+                  'tif', 'TIF', 'tiff', 'TIFF', 'bmp', 'BMP' ) ] )
+            randomIndex = random.randint( 1, len( dirList ) )
+            os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} ' +
+                '-type f -exec /usr/local/bin/sxiv -b -n ' + str(randomIndex) + ' -z ' + str(self.zoom) +' {} +' )
+            sys.exit()
+
         # case where script ran without options
-        root = Tk()
-        root.withdraw()
-        fileTypes = [ 
-            ( 'Image Files', ( '*.jpg', '*.JPG', '*.jpeg', '*.JPEG', '*.png', '*.PNG', '*.gif', '*.GIF', '*.tif', '*.TIF', '*.tiff', '*.TIFF', '*.bmp', '*.BMP' ) ),
-            ( 'All Files', '*.*' ), ( 'JPG', '*.jpg' ), ( 'PNG', '*.png' ), ( 'TIFF', '*.tif' ), ( 'BMP', '*.bmp' ), ( 'GIF', '*.gif' ) ]
-        fileName = filedialog.askopenfilename( defaultextension='Image Files', filetypes=fileTypes, initialdir=folder, initialfile=folder )
+        else:
+            root = Tk()
+            root.withdraw()
+            fileTypes = [ 
+                ( 'Image Files', ( '*.jpg', '*.JPG', '*.jpeg', '*.JPEG', '*.png', '*.PNG', '*.gif', '*.GIF', '*.tif', '*.TIF', '*.tiff', '*.TIFF', '*.bmp', '*.BMP' ) ),
+                ( 'All Files', '*.*' ), ( 'JPG', '*.jpg' ), ( 'PNG', '*.png' ), ( 'TIFF', '*.tif' ), ( 'BMP', '*.bmp' ), ( 'GIF', '*.gif' ) ]
+            fileName = filedialog.askopenfilename( defaultextension='Image Files', filetypes=fileTypes, initialdir=folder, initialfile=folder )
 
         # case where a legitimate file is selected
         if len( fileName ) > 1:
@@ -65,18 +85,13 @@ class jlsxiv( object ):
             fileNumber = dirList.index( os.path.basename( fileName ) ) + 1
             open( '/tmp/jlsxiv', 'w' ).write( folder )
             os.system( '/usr/bin/find "' + folder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} ' +
-                '-type f -exec /usr/local/bin/sxiv -b -n ' + str(fileNumber) + ' -z 150 {} +' )
-
-        elif not self.index is None:
-            open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
-            os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} ' +
-                '-type f -exec /usr/local/bin/sxiv -b -n ' + str(self.index) + '-z 150 {} +' )
+                '-type f -exec /usr/local/bin/sxiv -b -n ' + str(fileNumber) + ' -z ' + str(self.zoom) + ' {} +' )
 
         # case where a jump is expected
-        elif folder and (self.forward or self.backward or self.random):
+        elif folder and (self.forward or self.backward or self.randomDir):
             open( '/tmp/jlsxiv', 'w' ).write( origFolder + '/' )
             os.system( '/usr/bin/find "' + origFolder + '/"*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,tif,TIF,tiff,TIFF,bmp,BMP} ' +
-                '-type f -exec /usr/local/bin/sxiv -b -z 150 {} +' )
+                '-type f -exec /usr/local/bin/sxiv -b -z ' + str(self.zoom) + ' {} +' )
 
         # what does this cover?
         else:
@@ -100,8 +115,8 @@ class jlsxiv( object ):
             jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i + 1 ] + '/'
         elif self.backward and i > 0:
             jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i - 1 ] + '/'
-        elif self.random:
-            jumpFolder = os.path.dirname( folder ) + '/' + random.choice( dirList ) + '/'
+        elif self.randomDir:
+            jumpFolder = os.path.dirname( folder ) + '/' + randomDir.choice( dirList ) + '/'
         else:
             jumpFolder = os.path.dirname( folder ) + '/' + dirList[ i ] + '/'
 
@@ -136,7 +151,8 @@ if __name__ == '__main__':
     parser.add_argument( '-p', '--path', dest='path', required=False, help='specify the current path (may include the filename)', type=str )
     parser.add_argument( '-f', '--forward', dest='forward', required=False, help='jump forward a directory', action='store_true' )
     parser.add_argument( '-b', '--backward', dest='backward', required=False, help='jump backward a directory', action='store_true' )
-    parser.add_argument( '-r', '--random', dest='random', required=False, help='jump to a random directory', action='store_true' )
+    parser.add_argument( '-R', '--randomDir', dest='randomDir', required=False, help='jump to a random directory', action='store_true' )
+    parser.add_argument( '-r', '--randomImg', dest='randomImg', required=False, help='jump to a random image', action='store_true' )
     parser.add_argument( '-i', '--index', dest='index', required=False, help='define the starting index (optional)', type=int )
     parser.add_argument( '-z', '--zoom', dest='zoom', required=False, help='define the zoom of sxiv (optional)', default=150, type=int )
 

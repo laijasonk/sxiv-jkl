@@ -129,7 +129,7 @@ bool cg_delete_file(arg_t _)
 {
   int n = prefix != 0 && prefix - 1 < filecnt ? prefix - 1 : filecnt - 1;
   char cmdline[256];
-  sprintf(cmdline, "/hdd/jkl/bin/t440s/rmxm \"%s\" &", files[fileidx].path);
+  sprintf(cmdline, "~/jkl/bin/t440s/rmxm \"%s\" &", files[fileidx].path);
   system(cmdline);
   if (fileidx != n) {
     load_image(fileidx + 1);
@@ -154,7 +154,7 @@ bool cg_move_file(arg_t _)
 // jklai open file dialog
 bool cg_file_dialog(arg_t _)
 {
-  char cmdline[] = "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv &";
+  char cmdline[] = "~/jkl/repo/sxiv-jkl/scripts/jlsxiv &";
   system(cmdline);
   exit(EXIT_SUCCESS);
   return false;
@@ -165,7 +165,7 @@ bool cg_prev_dir(arg_t _)
 {
   char cmdline[256];
   double curr_zoom = img.zoom * 100;
-  sprintf(cmdline, "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv -b -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
+  sprintf(cmdline, "~/jkl/repo/sxiv-jkl/scripts/jlsxiv -b -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
   printf(cmdline);
   system(cmdline);
   exit(EXIT_SUCCESS);
@@ -177,7 +177,7 @@ bool cg_next_dir(arg_t _)
 {
   char cmdline[256];
   double curr_zoom = img.zoom * 100;
-  sprintf(cmdline, "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv -f -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
+  sprintf(cmdline, "~/jkl/repo/sxiv-jkl/scripts/jlsxiv -f -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
   printf(cmdline);
   system(cmdline);
   exit(EXIT_SUCCESS);
@@ -189,12 +189,25 @@ bool cg_rand_dir(arg_t _)
 {
   char cmdline[256];
   double curr_zoom = img.zoom * 100;
-  sprintf(cmdline, "/hdd/jkl/repo/sxiv-jkl/scripts/jlsxiv -r -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
+  sprintf(cmdline, "~/jkl/repo/sxiv-jkl/scripts/jlsxiv -R -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
   printf(cmdline);
   system(cmdline);
   exit(EXIT_SUCCESS);
   return false;
 }
+
+// jklai random image index
+bool cg_rand_img(arg_t _)
+{
+  char cmdline[256];
+  double curr_zoom = img.zoom * 100;
+  sprintf(cmdline, "~/jkl/repo/sxiv-jkl/scripts/jlsxiv -r -p \"%s\" -z \"%d\" &", files[fileidx].path, (int) curr_zoom);
+  printf(cmdline);
+  system(cmdline);
+  exit(EXIT_SUCCESS);
+  return false;
+}
+
 
 bool cg_reload_image(arg_t _)
 {

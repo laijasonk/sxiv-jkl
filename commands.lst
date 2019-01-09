@@ -21,6 +21,7 @@ G_CMD(file_dialog)
 G_CMD(prev_dir)
 G_CMD(next_dir)
 G_CMD(rand_dir)
+G_CMD(rand_img)
 
 I_CMD(navigate)
 I_CMD(cursor_navigate)
